@@ -13,14 +13,14 @@
   <div id="qrcode"></div>
 
   <script>
-    var map = L.map('map').setView([51.505, -0.09], 13);
+    var map = L.map('map');
+
+    // Initialize map centered on a default location (e.g., [0, 0])
+    map.setView([0, 0], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
-
-    L.marker([51.5, -0.1]).addTo(map)
-      .bindPopup('A sample popup!').openPopup();
 
     // Add a button to show current location
     var locateButton = L.control.locate().addTo(map);
@@ -33,6 +33,9 @@
         .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
       L.circle(e.latlng, radius).addTo(map);
+
+      // Update map center to user's location
+      map.setView(e.latlng);
     });
 
     // Handle location error event
