@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <title>Leaflet Map with QR Code</title>
+  <title>Leaflet Map with User's Location</title>
 </head>
 <body>
 
   <div id="map" style="height: 400px;"></div>
-  <div id="qrcode"></div>
 
   <script>
     var map = L.map('map');
@@ -22,8 +21,8 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Add a button to show current location
-    var locateButton = L.control.locate().addTo(map);
+    // Use Leaflet's locate method to set the map view based on the user's location
+    map.locate({ setView: true, maxZoom: 13 });
 
     // Handle location found event
     map.on('locationfound', function (e) {
@@ -33,18 +32,13 @@
         .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
       L.circle(e.latlng, radius).addTo(map);
-
-      // Update map center to user's location
-      map.setView(e.latlng);
     });
 
     // Handle location error event
     map.on('locationerror', function (e) {
-      alert(e.message);
+      alert("Error: Unable to retrieve your location. Please check your browser settings.");
     });
   </script>
-
-  <script src="path/to/qrcode.min.js"></script>
 
 </body>
 </html>
