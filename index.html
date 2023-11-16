@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=2.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     #map {
@@ -32,7 +32,8 @@
     anotherMarker.bindPopup('Another marker!');
 
     // Use Leaflet's locate method to set the map view based on the user's location
-    map.locate({ setView: true, maxZoom: 13 });
+   map.locate({ setView: true, maxZoom: 16, enableHighAccuracy: true, timeout: 10000 }); // Adjust the timeout value
+
 
     // Handle location found event
     map.on('locationfound', function (e) {
