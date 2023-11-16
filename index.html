@@ -17,27 +17,39 @@
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    var map = L.map('map', {
-      crs: L.CRS.Simple,
-      minZoom: -5,
-    });
+    var map = L.map('map').setView([0, 0], 2); // Adjust the initial center and zoom level
 
-    // Replace the URL with the one you copied from GitHub for your image
-    var imageUrl = 'https://github.com/natius55/aena/PRIMERPISO.png';
-    var imageBounds = [[0, 0], [1000, 1000]];
-
-    L.imageOverlay(imageUrl, imageBounds).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
     // Add a marker with a popup
-    var marker = L.marker([500, 500]).addTo(map);
+    var marker = L.marker([0, 0]).addTo(map);
     marker.bindPopup('This is a marker!');
 
     // Add another marker with a popup
-    var anotherMarker = L.marker([700, 700]).addTo(map);
+    var anotherMarker = L.marker([10, 10]).addTo(map);
     anotherMarker.bindPopup('Another marker!');
 
-    map.fitBounds(imageBounds);
+    // Use Leaflet's locate method to set the map view based on the user's location
+    map.locate({ setView: true, maxZoom: 13 });
+
+    // Handle location found event
+    map.on('locationfound', function (e) {
+      var radius = e.accuracy / 2;
+
+      L.marker(e.latlng).addTo(map)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+      L.circle(e.latlng, radius).addTo(map);
+    });
+
+    // Handle location error event
+    map.on('locationerror', function (e) {
+      alert("Error: Unable to retrieve your location. Please check your browser settings.");
+    });
   </script>
 
 </body>
 </html>
+
