@@ -21,9 +21,27 @@
 
     L.marker([51.5, -0.1]).addTo(map)
       .bindPopup('A sample popup!').openPopup();
+
+    // Add a button to show current location
+    var locateButton = L.control.locate().addTo(map);
+
+    // Handle location found event
+    map.on('locationfound', function (e) {
+      var radius = e.accuracy / 2;
+
+      L.marker(e.latlng).addTo(map)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+      L.circle(e.latlng, radius).addTo(map);
+    });
+
+    // Handle location error event
+    map.on('locationerror', function (e) {
+      alert(e.message);
+    });
   </script>
 
-  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+  <script src="path/to/qrcode.min.js"></script>
 
 </body>
 </html>
